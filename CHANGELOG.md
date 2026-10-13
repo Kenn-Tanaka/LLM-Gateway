@@ -2,6 +2,14 @@
 
 本ファイルの導入以降の変更を、新しい順に記録します。導入前の作業内容は既存の要件定義書・実装仕様書・作業引き継ぎ書を参照してください。
 
+## 2026-10-13 — GitHub Actions CI の追加
+
+- **変更対象**: 新規 `.github/workflows/ci.yml`、`CHANGELOG.md`。ソース・EXE・テストの変更はありません。
+- **変更内容**: `windows-2022` で、ビルドツリーのキャッシュ → CMake構成（VS 2022 x64）→ Releaseビルド → `ctest` → `verify_imports` → EXEを `bin/` へ配置 → `scripts/package.ps1` → ZIPとSHA256SUMSをアーティファクト保存、を実行するワークフローを追加しました。`main` へのpush、PR、手動実行で起動します。`bin/*.exe` はGit管理外（`.gitignore`）になったため、CI内でビルド成果物を配置してから配布スクリプトを実行します。
+- **変更理由**: クリーンな環境でのビルド・テスト・配布物作成を自動化し、手元環境への依存を検出するためです。
+- **検証結果**: 未実施です。ワークフローはローカルでは実行できず、GitHub上での初回実行結果の確認が必要です。ローカルでは同等のコマンド（ビルド、`ctest` 7/7、`verify_imports`、`package.ps1`）が成功していることを直前の作業で確認済みです。
+- **未解決事項**: 初回実行はwxWidgetsとllama.cppのビルドで長時間かかる見込みです。クリーン環境ではWinCredやポートの条件でテストが失敗する可能性があり、失敗時はログから対応が必要です。
+
 ## 2026-10-13 — MITライセンス（HAIA Project）での配布対応
 
 - **変更対象**: 新規 `LICENSE`。更新 `NOTICE.md`、`README.md`、`scripts/package.ps1`、`WORK_HANDOVER.md`、`CHANGELOG.md`。ソース・EXE・テストの変更はありません。
