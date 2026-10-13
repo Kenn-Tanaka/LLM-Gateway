@@ -1,0 +1,52 @@
+{
+  "schema_version": "2.0",
+  "listen": {
+    "host": "127.0.0.1",
+    "port": 8765
+  },
+  "limits": {
+    "max_request_bytes": 10485760
+  },
+  "timeouts": {
+    "upstream_connect_ms": 5000,
+    "upstream_read_ms": 60000
+  },
+  "logging": {
+    "level": "INFO",
+    "dir": "%LOCALAPPDATA%\\LLM-Gateway\\logs"
+  },
+  "security": {
+    "client_auth": true,
+    "credential_name": "llm_gateway|default",
+    "admin_credential_name": "llm_gateway|admin",
+    "cors": {
+      "allowed_origins": [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173"
+      ]
+    }
+  },
+  "credentials": {
+    "service_name": "CloudLLM",
+    "environment_fallback": false
+  },
+  "embedded_engine": {
+    "enabled": false
+  },
+  "models": {
+    "chat": {
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4"
+    }
+  },
+  "providers": {
+    "openrouter": {
+      "base_url": "https://openrouter.ai/api/v1",
+      "authentication": "bearer",
+      "key_vendor": "openrouter",
+      "key_slot": "default",
+      "model_discovery": true,
+      "allowlist": ["openrouter/*"]
+    }
+  }
+}

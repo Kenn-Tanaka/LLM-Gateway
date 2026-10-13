@@ -1,0 +1,85 @@
+{
+  "schema_version": "2.0",
+  "listen": {
+    "host": "127.0.0.1",
+    "port": 8765
+  },
+  "limits": {
+    "max_request_bytes": 10485760
+  },
+  "timeouts": {
+    "upstream_connect_ms": 5000,
+    "upstream_read_ms": 60000
+  },
+  "logging": {
+    "level": "INFO",
+    "dir": "%LOCALAPPDATA%\\LLM-Gateway\\logs"
+  },
+  "security": {
+    "client_auth": true,
+    "credential_name": "llm_gateway|default",
+    "admin_credential_name": "llm_gateway|admin",
+    "cors": {
+      "allowed_origins": [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173"
+      ]
+    }
+  },
+  "credentials": {
+    "service_name": "CloudLLM",
+    "environment_fallback": false
+  },
+  "embedded_engine": {
+    "enabled": true,
+    "embedding_model": {
+      "path": "models/bge-m3-q8_0.gguf",
+      "n_threads": 4,
+      "n_gpu_layers": 0
+    },
+    "reranker_model": {
+      "path": "models/bge-reranker-v2-m3-q8_0.gguf",
+      "n_threads": 4,
+      "n_gpu_layers": 0
+    }
+  },
+  "models": {
+    "embedder-query": {
+      "provider": "embedded",
+      "model": "bge-m3",
+      "input_prefix": "Represent this sentence for searching relevant passages: "
+    },
+    "embedder-doc": {
+      "provider": "embedded",
+      "model": "bge-m3"
+    },
+    "reranker": {
+      "provider": "embedded",
+      "model": "bge-reranker-v2-m3"
+    },
+    "slide-writer": {
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4"
+    }
+  },
+  "providers": {
+    "embedded": {
+      "authentication": "none",
+      "allowlist": ["embedded/*"]
+    },
+    "openrouter": {
+      "base_url": "https://openrouter.ai/api/v1",
+      "authentication": "bearer",
+      "key_vendor": "openrouter",
+      "key_slot": "default",
+      "model_discovery": true,
+      "allowlist": ["openrouter/*"]
+    },
+    "ollama": {
+      "base_url": "http://127.0.0.1:11434/v1",
+      "authentication": "none",
+      "model_discovery": true,
+      "allowlist": ["ollama/*"]
+    }
+  }
+}
