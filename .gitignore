@@ -4,3 +4,4 @@ dist/
 bin/llm-gateway.json
 bin/*.local.json
 *.gguf
+WORK_HANDOVER.md
