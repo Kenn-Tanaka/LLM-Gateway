@@ -3,5 +3,6 @@ dist/
 *.log
 bin/llm-gateway.json
 bin/*.local.json
+*.exe
 *.gguf
 WORK_HANDOVER.md
